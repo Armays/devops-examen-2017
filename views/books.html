@@ -1,47 +1,84 @@
 doctype html
 html(lang="fr")
 	head
+		style
+			include ../css/jquery-ui.min.css
+			include ../css/styles.css
+		script
+			include ../js/jquery-3.2.1.min.js
+			include ../js/jquery-ui.min.js
+			include ../js/script.js
 		title livres
 	body
 		h1 Ajout d'un livre
 		form(action='/books/new', method='POST')
-			table
-			tr
-				td
-					label(for='isbn') ISBN :
-					input(type='text', name='isbn')
-				td
-					label(for='titre') Titre :
-					input(type='text', name='titre')
-			tr
-				td
-					label(for='auteur') Auteur :
-					input(type='text', name='auteur')
-				td
-					label(for='date_achat') Date d'achat :
-					input(type='text', name='date_achat')
-			tr
-				td
-					label(for='etat') Etat :
-					select(name='etat')
-						option(value="neuf") neuf
-						option(value="bonEtat") bon état
-						option(value="abime") abimé
-				td
-					label(for='thematiques') thematique :
-					input(type='text', name='thematiques', placeholder='Thematiques')
-				tr
-					button(type='submit') Enregistrer
+			div(class="divAjout")
+				label(for='isbn') ISBN :
+				input(type='text', name='isbn')
+			div(class="divAjout")
+				label(for='titre') Titre :
+				input(type='text', name='titre')
+			div(class="divAjout")
+				label(for='auteur') Auteur :
+				input(type='text', name='auteur')
+			div(class="divAjout")
+				label(for='date_achat') Date d'achat :
+				input(type='text', name='date_achat' id='datepicker')
+			div(class="divAjout")
+				label(for='etat') Etat :
+				select(name='etat')
+					option(value="neuf") neuf
+					option(value="bonEtat") bon état
+					option(value="abime") abimé
+			div(class="divAjout")
+				label(for='thematiques') thematique :
+				input(type='text', name='thematiques', placeholder='Thematiques')
+			div(class="divAjout")
+				button(type='submit') Enregistrer
+
+		-function prettyDate(dateString){
+			-var date = new Date(dateString);
+			-var d = date.getDate();
+			-var monthNames = [ "Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Aout", "Sep", "Oct", "Nov", "Dec" ];
+			-var m = monthNames[date.getMonth()];
+			-var y = date.getFullYear();
+			-return d+' '+m+' '+y;
+		-}
+
+		-function capitalizeFirstLetter(string) {
+			-return string.charAt(0).toUpperCase() + string.slice(1);
+		-}
 
 		h1 Les livres
 		each livre in livres
 			ul
-				li Titre : #{livre.titre}
+				li Titre : #{capitalizeFirstLetter(livre.titre)}
 				li ISBN : #{livre.ISBN}
-				li Auteur : #{livre.auteur}
-				li Date de vente : #{livre.date_achat}
-				li état : #{livre.etat}
-				li thématiques :
+				li Auteur : #{capitalizeFirstLetter(livre.auteur)}
+				li Date de vente : #{prettyDate(livre.date_achat)}
+				li Etat : #{livre.etat}
+				li Thématiques :
 					each theme in livre.thematiques
 						ul
 							li #{theme}
+				- if (typeof(livre.emprunt) !== 'undefined'){
+					li Emprunt :
+						ul
+							li Date d'emprunt : #{prettyDate(livre.emprunt['date_emprunt'])}
+							- if (livre.emprunt['date_retour'] !== null) {
+								li Date de retour : #{prettyDate(livre.emprunt['date_retour'])}
+							-}
+							- else {
+								li Livre non disponible
+							-}
+
+							li Durée normale de l'emprunt : #{livre.emprunt['duree_emprunt']}
+				-}
+				- if (typeof(livre.emprunteur) !== 'undefined') {
+					li Emprunteur :
+						ul
+							li Nom : #{capitalizeFirstLetter(livre.emprunteur['nom'])}
+							li Prénom : #{capitalizeFirstLetter(livre.emprunteur['prenom'])}
+							li Téléphone : #{livre.emprunteur['telephone']}
+							li Mail : #{livre.emprunteur['mail']}
+				-}

@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 var app = express();
 app.use(bodyParser());
+app.use(express.static(__dirname + '/js'));
 app.engine('html', consolid.pug);
 app.set('view engine', 'html');
 app.set('views',  __dirname +  '/views');
@@ -16,28 +17,32 @@ app.get('/', function(req, res) {
 })
 .get('/books', function(req, res) {
 	app.db.collection('bibliotheque').find({}).toArray(function(err, livre) {
+		for (var l of livre) {
+			if (l.emprunt) {
+				console.log(l.emprunt['date_retour'] !== null);
+			}
+
+		}
 		if (err) console.log(err);
-		console.log(livre);
 		res.render("books", {
 			'livres' : livre
 		});
 	});
 })
 .post('/books/new', function(req, res) {
-  	app.db.collection('livre').save({
+  	app.db.collection('bibliotheque').save({
 		ISBN: req.body.isbn,
 		titre: req.body.titre,
 		auteur: req.body.auteur,
 		etat: req.body.etat,
 		date_achat: new Date(req.body.dateAchat),
-		thematiques: req.body.thematique.split(",")
+		thematiques: req.body.thematiques.split(",")
 	})
 	res.redirect('/books')
 });
 
 mongoClient.connect(urlDB, function (err, db) {
 	if (err) {
-		console.log('test');
 		console.log(err);
 	}
 	db.authenticate('admin', 'jesuisunepoule', function(err, res) {
