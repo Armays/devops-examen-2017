@@ -18,8 +18,8 @@ html(lang="fr")
 					label(for='auteur') Auteur :
 					input(type='text', name='auteur')
 				td
-					label(for='dateAchat') Date d'achat :
-					input(type='text', name='dateAchat')
+					label(for='date_achat') Date d'achat :
+					input(type='text', name='date_achat')
 			tr
 				td
 					label(for='etat') Etat :
@@ -28,8 +28,8 @@ html(lang="fr")
 						option(value="bonEtat") bon état
 						option(value="abime") abimé
 				td
-					label(for='thematique') thematique :
-					input(type='text', name='thematique', placeholder='Thematiques')
+					label(for='thematiques') thematique :
+					input(type='text', name='thematiques', placeholder='Thematiques')
 				tr
 					button(type='submit') Enregistrer
 
@@ -38,10 +38,10 @@ html(lang="fr")
 			ul
 				li Titre : #{livre.titre}
 				li ISBN : #{livre.ISBN}
-				li Auteur : #{livre.Auteur}
-				li Date de vente : #{livre.dateAchat}
+				li Auteur : #{livre.auteur}
+				li Date de vente : #{livre.date_achat}
 				li état : #{livre.etat}
-				li thématique :
-					each theme in livre.thematique
+				li thématiques :
+					each theme in livre.thematiques
 						ul
 							li #{theme}
