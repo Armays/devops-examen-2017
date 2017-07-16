@@ -26,6 +26,7 @@
     "consolidate": "^0.14.5",
     "express": "^4.15.3",
     "material-icons": "^0.1.0",
+    "pm2-docker": "^2.1.0",
     "pug": "^2.0.0-rc.2"
   }
 }

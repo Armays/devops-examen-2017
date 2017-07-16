@@ -1,0 +1,37 @@
+{
+  "AWSEBDockerrunVersion": "2",
+  "Authentication": {
+    "Bucket": "tpnosqldevops",
+    "Key": "docker.config.json"
+  },
+  "containerDefinitions": [
+    {
+      "name": "back",
+      "image": "armays/node:1.0",
+      "essential": true,
+      "memory": 256
+    },
+    {
+      "name": "nginx",
+      "image": "armays/nginx:1.0",
+      "essential": true,
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "awseb-logs-nginx",
+          "containerPath": "/var/log/nginx"
+        }
+      ],
+      "links": [
+        "back"
+      ]
+    }
+  ]
+}
+
