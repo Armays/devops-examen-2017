@@ -36,53 +36,14 @@ html(lang="fr")
 			div(class="divAjout")
 				button(type='submit') Enregistrer
 
-		-function prettyDate(dateString){
-			-var date = new Date(dateString);
-			-var d = date.getDate();
-			-var monthNames = [ "Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Aout", "Sep", "Oct", "Nov", "Dec" ];
-			-var m = monthNames[date.getMonth()];
-			-var y = date.getFullYear();
-			-return d+' '+m+' '+y;
-		-}
-
 		-function capitalizeFirstLetter(string) {
 			-return string.charAt(0).toUpperCase() + string.slice(1);
 		-}
-
 		h1 Les livres
 		each livre in livres
 			ul
 				li Titre : #{capitalizeFirstLetter(livre.titre)}
-				li ISBN : #{livre.ISBN}
-				li Auteur : #{capitalizeFirstLetter(livre.auteur)}
-				li Date de vente : #{prettyDate(livre.date_achat)}
-				li Etat : #{livre.etat}
-				li Thématiques :
-					each theme in livre.thematiques
-						ul
-							li #{theme}
-				- if (typeof(livre.emprunt) !== 'undefined'){
-					li Emprunt :
-						ul
-							li Date d'emprunt : #{prettyDate(livre.emprunt['date_emprunt'])}
-							- if (livre.emprunt['date_retour'] !== null) {
-								li Date de retour : #{prettyDate(livre.emprunt['date_retour'])}
-							-}
-							- else {
-								li Livre non disponible
-							-}
-
-							li Durée normale de l'emprunt : #{livre.emprunt['duree_emprunt']}
-				-}
-				- if (typeof(livre.emprunteur) !== 'undefined') {
-					li Emprunteur :
-						ul
-							li Nom : #{capitalizeFirstLetter(livre.emprunteur['nom'])}
-							li Prénom : #{capitalizeFirstLetter(livre.emprunteur['prenom'])}
-							li Téléphone : #{livre.emprunteur['telephone']}
-							li Mail : #{livre.emprunteur['mail']}
-				-}
-				form(name="supprimerLivre", method="post", action="/books/delete/" + livre._id)
-					button(type="submit") Supprimer
-				form(name="deleteBook",method="post",action="/books/" + livre.ISBN + "/delete")
-					button(type="submit") Remove the book from library
+			form(name="supprimerLivre", method="post", action="/books/delete/" + livre._id)
+				button(type="submit") Supprimer
+			form(name="afficherLivre", method="post", action="/books/" + livre._id)
+				button(type="submit") Afficher

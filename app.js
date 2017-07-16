@@ -24,12 +24,21 @@ app.get('/', function(req, res) {
 		});
 	});
 })
+.post('/books/:id', function(req, res) {
+	app.db.collection('bibliotheque').findOne({'_id': ObjectId(req.params.id)}, function(err, livre) {
+		if (err) console.log(err);
+		console.log(livre);
+		res.render("book", {
+			'livre' : livre
+		});
+	})
+})
 .post('/books/delete/:id', function(req, res) {
 	app.db.collection('bibliotheque').deleteOne({_id: ObjectId(req.params.id)}, function(err, response) {
-       if (err) { console.log(err);}
-		 });
-		res.status(204);
-		res.redirect('/books');
+    if (err) { console.log(err);}
+	});
+	res.status(204);
+	res.redirect('/books');
 })
 .post('/books/new', function(req, res) {
   	app.db.collection('bibliotheque').save({
