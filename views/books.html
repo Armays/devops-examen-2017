@@ -42,7 +42,7 @@ html(lang="fr")
 		h1 Les livres
 		each livre in livres
 			ul
-				li Titre : #{capitalizeFirstLetter(livre.titre)}
+				li Titre : #{capitalizeFirstLetter(livre.titre)} - Auteur : #{capitalizeFirstLetter(livre.auteur)}
 			form(name="supprimerLivre", method="post", action="/books/delete/" + livre._id)
 				button(type="submit") Supprimer
 			form(name="afficherLivre", method="post", action="/books/" + livre._id)

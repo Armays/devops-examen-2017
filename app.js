@@ -1,64 +1,27 @@
 var express = require('express');
-var mongoClient = require('mongodb').MongoClient;
-var ObjectId = require('mongodb').ObjectID;
+var routes = require('./routes/bibliotheque.js');
 var consolid = require('consolidate');
 var bodyParser = require('body-parser');
 
 var app = express();
-app.use(bodyParser());
-app.use(express.static(__dirname + '/js'));
+
+// Pour gérer les POST
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/', routes);
+
+// La 404
+app.get('*', function (req, res) {
+    console.log("Not found.");
+    res.status(404).send("Page not found.");
+});
+
 app.engine('html', consolid.pug);
 app.set('view engine', 'html');
+app.locals.pretty = true;
 app.set('views',  __dirname +  '/views');
 
-var urlDB = 'mongodb://35.158.252.204:27017/admin';
+app.listen(8080);
 
-app.get('/', function(req, res) {
-	res.render("index");
-})
-.get('/books', function(req, res) {
-	app.db.collection('bibliotheque').find({}).toArray(function(err, livre) {
-		if (err) console.log(err);
-		res.render("books", {
-			'livres' : livre
-		});
-	});
-})
-.post('/books/:id', function(req, res) {
-	app.db.collection('bibliotheque').findOne({'_id': ObjectId(req.params.id)}, function(err, livre) {
-		if (err) console.log(err);
-		console.log(livre);
-		res.render("book", {
-			'livre' : livre
-		});
-	})
-})
-.post('/books/delete/:id', function(req, res) {
-	app.db.collection('bibliotheque').deleteOne({_id: ObjectId(req.params.id)}, function(err, response) {
-    if (err) { console.log(err);}
-	});
-	res.status(204);
-	res.redirect('/books');
-})
-.post('/books/new', function(req, res) {
-  	app.db.collection('bibliotheque').save({
-		ISBN: req.body.isbn,
-		titre: req.body.titre,
-		auteur: req.body.auteur,
-		etat: req.body.etat,
-		date_achat: new Date(req.body.dateAchat),
-		thematiques: req.body.thematiques.split(",")
-	})
-	res.redirect('/books')
-});
-
-mongoClient.connect(urlDB, function (err, db) {
-	if (err) {
-		console.log(err);
-	}
-	db.authenticate('admin', 'jesuisunepoule', function(err, res) {
-		app.db = db;
-		app.listen(8080);
-		console.log("Express server started on 8080");
-	});
-});
+console.log('Ecoute sur 8080');
