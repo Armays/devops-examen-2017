@@ -1,0 +1,30 @@
+{
+  "name": "devops-exament-2017",
+  "version": "1.0.0",
+  "description": "TP de nosql",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Armays/devops-examen-2017.git"
+  },
+  "keywords": [
+    "mongodb",
+    "nodejs",
+    "express"
+  ],
+  "author": "Diane Lakestani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Armays/devops-examen-2017/issues"
+  },
+  "homepage": "https://github.com/Armays/devops-examen-2017#readme",
+  "dependencies": {
+    "consolidate": "^0.14.5",
+    "express": "^4.15.3",
+    "material-icons": "^0.1.0",
+    "pug": "^2.0.0-rc.2"
+  }
+}

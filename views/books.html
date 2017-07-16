@@ -82,3 +82,7 @@ html(lang="fr")
 							li Téléphone : #{livre.emprunteur['telephone']}
 							li Mail : #{livre.emprunteur['mail']}
 				-}
+				form(name="supprimerLivre", method="post", action="/books/delete/" + livre._id)
+					button(type="submit") Supprimer
+				form(name="deleteBook",method="post",action="/books/" + livre.ISBN + "/delete")
+					button(type="submit") Remove the book from library

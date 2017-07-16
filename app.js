@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
 var consolid = require('consolidate');
 var bodyParser = require('body-parser');
 
@@ -17,17 +18,18 @@ app.get('/', function(req, res) {
 })
 .get('/books', function(req, res) {
 	app.db.collection('bibliotheque').find({}).toArray(function(err, livre) {
-		for (var l of livre) {
-			if (l.emprunt) {
-				console.log(l.emprunt['date_retour'] !== null);
-			}
-
-		}
 		if (err) console.log(err);
 		res.render("books", {
 			'livres' : livre
 		});
 	});
+})
+.post('/books/delete/:id', function(req, res) {
+	app.db.collection('bibliotheque').deleteOne({_id: ObjectId(req.params.id)}, function(err, response) {
+       if (err) { console.log(err);}
+		 });
+		res.status(204);
+		res.redirect('/books');
 })
 .post('/books/new', function(req, res) {
   	app.db.collection('bibliotheque').save({
