@@ -1,7 +1,7 @@
 # TP de noSql en Licence Devops (Groupe 1)
 
 Réalisation d'une application d'une bibliothèque de livres.
-Utilisation de nodejs comme serveur web et mongodb comme base de données, avec express.
+Utilisation de nodejs comme serveur web et mongodb comme base de données, avec express, aws.
 
 Format de la base de données:
 bibliotheque:
@@ -28,3 +28,5 @@ bibliotheque:
 J'ai choisi de faire mes requêtes par rapport à l'id et non à l'ISBN au cas où l'ISBN ait été rentré deux fois et ne soit pas unique.
 
 Pour lancer l'application : pm2-docker app.js et aller dans localhost:8080
+
+La base de données mongodb est en ligne sur AWS avec CloudFormation, j'ai utilisé le client Robo 3T pour la remplir dans un premier temps.

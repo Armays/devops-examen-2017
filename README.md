@@ -27,6 +27,8 @@ bibliotheque:
 
 J'ai choisi de faire mes requêtes par rapport à l'id et non à l'ISBN au cas où l'ISBN ait été rentré deux fois et ne soit pas unique.
 
-Pour lancer l'application : pm2-docker app.js et aller dans localhost:8080
+Pour lancer l'application : node app.js et aller dans localhost:8080
 
 La base de données mongodb est en ligne sur AWS avec CloudFormation, j'ai utilisé le client Robo 3T pour la remplir dans un premier temps.
+
+J'ai essayé de mettre en ligne le site sur aws avec elastic beanstalk en utilise un docker multi container et nginx, mais je n'ai pas encore réussi.

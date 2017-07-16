@@ -1,13 +1,9 @@
 {
   "AWSEBDockerrunVersion": "2",
-  "Authentication": {
-    "Bucket": "tpnosqldevops",
-    "Key": "docker.config.json"
-  },
   "containerDefinitions": [
     {
       "name": "back",
-      "image": "armays/node:1.0",
+      "image": "armays/node:4.0",
       "essential": true,
       "memory": 256
     },

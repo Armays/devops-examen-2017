@@ -1,11 +1,12 @@
 FROM node:6-wheezy
 
+WORKDIR /src
+
 RUN git clone https://armays:ayatola0307@github.com/Armays/devops-examen-2017.git
 
-COPY . /src
 WORKDIR /src/devops-exament-2017
 
-RUN npm install
+RUN npm install && npm install --global pm2
 
 EXPOSE 5000
 
