@@ -90,5 +90,25 @@ router.post('/books/:id', function(req, res) {
   res.status(200);
   res.redirect('/books');
 });
+router.post('/books/back/:id', function(req, res) {
+  mongoClient.connect(urlDB, function (err, db) {
+  	if (err) {
+  		console.log(err);
+  	}
+    collection = db.collection('bibliotheque');
+    collection.findOne({'_id': ObjectId(req.params.id)}, function(err, livre) {
+  		if (err) console.log(err);
+      collection.update({_id: ObjectId(req.params.id)}, {$set: {
+        emprunt: {
+          date_emprunt: livre.emprunt['date_emprunt'],
+          date_retour: new Date(),
+          duree_emprunt: livre.emprunt['duree_emprunt']
+        }
+      }});
+    });
+  });
+  res.status(200);
+  res.redirect('/books');
+});
 
 module.exports = router;
