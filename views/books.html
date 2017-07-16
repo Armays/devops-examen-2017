@@ -34,7 +34,7 @@ html(lang="fr")
 				label(for='thematiques') thematique :
 				input(type='text', name='thematiques', placeholder='Thematiques')
 			div(class="divAjout")
-				button(type='submit') Enregistrer
+				button(type='submit') Ajouter
 
 		-function capitalizeFirstLetter(string) {
 			-return string.charAt(0).toUpperCase() + string.slice(1);
@@ -45,5 +45,5 @@ html(lang="fr")
 				li Titre : #{capitalizeFirstLetter(livre.titre)} - Auteur : #{capitalizeFirstLetter(livre.auteur)}
 			form(name="supprimerLivre", method="post", action="/books/delete/" + livre._id)
 				button(type="submit") Supprimer
-			form(name="afficherLivre", method="post", action="/books/" + livre._id)
+			form(name="afficherLivre", method="post", action="/books/" + livre._id + "/edit")
 				button(type="submit") Afficher

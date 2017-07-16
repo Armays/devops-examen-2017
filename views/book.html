@@ -12,6 +12,24 @@
 -}
 
 a(href="/books") Retour à la liste des livres
+
+h1 Emprunter un livre
+form(action="/books/" + livre._id, method="POST")
+  div(class="divAjout")
+    label(for='nom') Nom :
+    input(type='text', name='nom')
+  div(class="divAjout")
+    label(for='prenom') Prénom :
+    input(type='text', name='prenom')
+  div(class="divAjout")
+    label(for='telephone') Téléphone :
+    input(type='text', name='telephone')
+  div(class="divAjout")
+    label(for='mail') Mail :
+    input(type='text', name='mail')
+  div(class="divAjout")
+    button(type='submit') Emprunter
+
 h1 Détails d'un livre
 ul
   li Titre : #{capitalizeFirstLetter(livre.titre)}

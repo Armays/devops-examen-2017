@@ -3,11 +3,14 @@ var router = express.Router();
 var mongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var urlDB = 'mongodb://admin:jesuisunepoule@35.158.252.204:27017/admin';
+var collection;
+var alert = require('alert-node');
 
 mongoClient.connect(urlDB, function (err, db) {
 	if (err) {
 		console.log(err);
 	}
+  collection = db.collection('bibliotheque');
   console.log("Connection ok");
 	// db.authenticate('admin', 'jesuisunepoule', function(err, res) {
 	// 	if (err) console.log(err);
@@ -19,7 +22,7 @@ router.get('/', function(req, res) {
 	res.render("index");
 });
 router.get('/books', function(req, res) {
-	app.db.collection('bibliotheque').find({}).toArray(function(err, livre) {
+	collection.find({}).toArray(function(err, livre) {
 		if (err) console.log(err);
 		res.render("books", {
       title: 'Liste des livres',
@@ -27,8 +30,8 @@ router.get('/books', function(req, res) {
 		});
 	});
 });
-router.post('/books/:id', function(req, res) {
-	app.db.collection('bibliotheque').findOne({'_id': ObjectId(req.params.id)}, function(err, livre) {
+router.post('/books/:id/edit', function(req, res) {
+	collection.findOne({'_id': ObjectId(req.params.id)}, function(err, livre) {
 		if (err) console.log(err);
 		console.log(livre);
 		res.render("book", {
@@ -38,14 +41,14 @@ router.post('/books/:id', function(req, res) {
 	})
 });
 router.post('/books/delete/:id', function(req, res) {
-	app.db.collection('bibliotheque').deleteOne({_id: ObjectId(req.params.id)}, function(err, response) {
+	collection.deleteOne({_id: ObjectId(req.params.id)}, function(err, response) {
     if (err) { console.log(err);}
 	});
 	res.status(204);
 	res.redirect('/books');
 });
 router.post('/books/new', function(req, res) {
-  	app.db.collection('bibliotheque').save({
+  collection.save({
 		ISBN: req.body.isbn,
 		titre: req.body.titre,
 		auteur: req.body.auteur,
@@ -54,6 +57,38 @@ router.post('/books/new', function(req, res) {
 		thematiques: req.body.thematiques.split(",")
 	})
 	res.redirect('/books')
+});
+router.post('/books/:id', function(req, res) {
+  mongoClient.connect(urlDB, function (err, db) {
+  	if (err) {
+  		console.log(err);
+  	}
+    collection = db.collection('bibliotheque');
+    collection.findOne({'_id': ObjectId(req.params.id)}, function(err, livre) {
+  		if (err) console.log(err);
+      console.log(livre.emprunt);
+      if (livre.emprunt && livre.emprunt['date_retour'] === null) {
+        alert('Ce livre est déjà emprunté !');
+      } else {
+        collection.update({_id: ObjectId(req.params.id)}, {$set: {
+          emprunt: {
+            date_emprunt: new Date(),
+            date_retour: null,
+            duree_emprunt: '15 jours'
+          },
+          emprunteur: {
+            nom: req.body.nom,
+            prenom: req.body.prenom,
+            telephone: req.body.telephone,
+            mail: req.body.mail
+          }
+
+        }});
+      }
+    });
+  });
+  res.status(200);
+  res.redirect('/books');
 });
 
 module.exports = router;
